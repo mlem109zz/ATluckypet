@@ -169,7 +169,7 @@ namespace ATLuckyPet
 
         private void HandleLocationChange(GameLocation here, GameLocation there)
         {
-            Building building = there.ParentBuilding;
+            Building building = Game1.getFarm().buildings.FirstOrDefault(b => b.indoors.Value == there);
 
             if (there is AnimalHouse && building != null)
             {
