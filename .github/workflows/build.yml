@@ -1,0 +1,44 @@
+name: Build mod
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Lay file tham chieu game
+        uses: actions/checkout@v4
+        with:
+          repository: StardewModders/mod-reference-assemblies
+          fetch-tags: true
+          ref: refs/tags/SDV1.6.3-SMAPI4.0.2
+          path: GamePath
+
+      - name: Dat duong dan game
+        run: |
+          echo "GamePath=$GITHUB_WORKSPACE/GamePath" >> "$GITHUB_ENV"
+          echo "<Project><PropertyGroup><GamePath>$GITHUB_WORKSPACE/GamePath</GamePath></PropertyGroup></Project>" > "$HOME/stardewvalley.targets"
+
+      - name: Build
+        run: |
+          dotnet restore
+          dotnet build --no-restore -c Release -p:EnableModDeploy=false -p:EnableModZip=false
+
+      - name: Goi mod
+        run: |
+          mkdir -p out/ATLuckyPet
+          cp bin/Release/net6.0/ATLuckyPet.dll out/ATLuckyPet/
+          cp manifest.json out/ATLuckyPet/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ATLuckyPet-mod
+          path: out
