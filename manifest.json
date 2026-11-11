@@ -1,0 +1,9 @@
+{
+  "Name": "AT Lucky Pet",
+  "Author": "AT",
+  "Version": "1.0.0",
+  "Description": "Luck 100% bật/tắt được và tự động đi vuốt ve vật nuôi trong chuồng.",
+  "UniqueID": "AT.LuckyPet",
+  "EntryDll": "ATLuckyPet.dll",
+  "MinimumApiVersion": "4.0.0"
+}
